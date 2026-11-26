@@ -1,0 +1,23 @@
+schema_version = "1.0.0"
+
+# Used by Blender 4.2+ (Extensions). Blender 3.x/4.0/4.1 ignore this file and use bl_info in __init__.py.
+# Keep `version` in sync with bl_info["version"].
+id = "io_scene_madtracks"
+version = "1.0.0"
+name = "Mad Tracks Import/Export"
+tagline = "Import and export Mad Tracks models, levels and lightmaps"
+maintainer = "Getriebe <163671871+Getriebe@users.noreply.github.com>"
+type = "add-on"
+
+website = "https://github.com/Getriebe/MadTracks-Blender"
+
+tags = ["Import-Export"]
+
+blender_version_min = "4.2.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
+
+[permissions]
+files = "Import/export Mad Tracks files from/to disk"
