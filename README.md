@@ -1,7 +1,6 @@
 # Mad Tracks Import/Export for Blender
 
-<img src="./img/MTLevel.png" width="400">
-<img src="./img/MTCar.png" width="400">
+<img src="./img/MTLevel.png" width="400"><img src="./img/MTCar.png" width="400">
 
 A Blender add-on to import and export assets from the game **Mad Tracks**, tested with Blender **3.4** and **4.3**.
 
