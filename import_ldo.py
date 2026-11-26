@@ -12,7 +12,7 @@ class MaterialImport:
 		
 		color1  			= utils.read_color(file)  if (flags & ldo.Material.FLAG_COLORED1) 	else None
 		color2  			= utils.read_color(file)  if (flags & ldo.Material.FLAG_COLORED2) 	else None
-		reflectivity		= utils.read_float(file)  if (flags & ldo.Material.FLAG_REFLECTIVE)   else None
+		reflectivity		= utils.read_float(file)  if (flags & ldo.Material.FLAG_REFLECTIVE) else None
 		texture 			= utils.read_string(file) if (flags & ldo.Material.FLAG_TEXTURED) 	else None
 		emissive_strength   = utils.read_float(file)  if (flags & ldo.Material.FLAG_EMISSIVE) 	else None
 		
@@ -264,15 +264,21 @@ class LDOImport:
 					mix_node = mtl.node_tree.nodes.new("ShaderNodeMixRGB")
 					mix_node.blend_type = 'MULTIPLY'
 					mtl.node_tree.links.new(bsdf.inputs["Base Color"], mix_node.outputs["Color"])
-					mtl.node_tree.links.new(bsdf.inputs["Alpha"],      texture_node.outputs["Alpha"])
+					if flags & ldo.Material.FLAG_TRANSPARENT: # Alpha blend
+						mtl.node_tree.links.new(bsdf.inputs["Alpha"], texture_node.outputs["Alpha"])
+					else: # Alpha tested (decals)
+						clip_node = mtl.node_tree.nodes.new("ShaderNodeMath")
+						clip_node.name = clip_node.label = "Alpha Clip"
+						clip_node.operation = 'GREATER_THAN'
+						clip_node.inputs[1].default_value = 0.5
+						mtl.node_tree.links.new(clip_node.inputs[0], texture_node.outputs["Alpha"])
+						mtl.node_tree.links.new(bsdf.inputs["Alpha"], clip_node.outputs["Value"])
+					compat.set_transparent(mtl)
 					
 					mtl.node_tree.links.new(mix_node.inputs["Color1"], texture_node.outputs["Color"])
 					mtl.node_tree.links.new(mix_node.inputs["Color2"], color_node.outputs["Color"])
 				else:
 					mtl.node_tree.links.new(bsdf.inputs["Base Color"], color_node.outputs["Color"])
-									
-				if flags & ldo.Material.FLAG_TRANSPARENT:
-					mtl.blend_method = 'BLEND'
 				
 				if flags & ldo.Material.FLAG_EMISSIVE:
 					s = material.emissive_strength

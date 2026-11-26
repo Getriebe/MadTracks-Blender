@@ -223,8 +223,9 @@ class LDOExport:
 							col1 = pure_color_input.outputs["Color"].default_value
 							material_color1  = mathutils.Color((col1[0], col1[1], col1[2]))
 							material_texture = image_base_name(texture_input.image)
-							# Mark material as transparent if texture has alpha
-							if (bpy.data.images[texture_input.image.name].depth == 32):
+							# Alpha linked from a texture => blended and flag. "Alpha Clip" node => alpha test and no flag
+							alpha_input = bsdf.inputs["Alpha"]
+							if alpha_input.is_linked and alpha_input.links[0].from_node.bl_idname == "ShaderNodeTexImage":
 								material_flags |= ldo.Material.FLAG_TRANSPARENT
 						elif color_input.bl_idname == "ShaderNodeRGB": # Just color
 							material_flags |= ldo.Material.FLAG_COLORED1
