@@ -1,6 +1,6 @@
 # Mad Tracks Import/Export for Blender
 
-<img src="./img/MTlevel.png" width="400">
+<img src="./img/MTLevel.png" width="400">
 <img src="./img/MTCar.png" width="400">
 
 A Blender add-on to import and export assets from the game **Mad Tracks**, tested with Blender **3.4** and **4.3**.
@@ -46,6 +46,8 @@ MyObject              # active collection, contains no objects directly
 └── Atomic 1
     └── ...
 ```
+
+The game will read any files placed inside `<GameDirectory>/Data/` first before loading them from the data.zip archive. Export files there, e.g. `<GameDirectory>/Data/Gfx/models/Geometry/New_Mirage_Orange.ldo`
 
 Requirements:
 
